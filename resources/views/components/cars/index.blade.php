@@ -1,3 +1,5 @@
 <div>
-    <!-- An unexamined life is not worth living. - Socrates -->
+    @foreach ( $cars as $car )
+        <div>{{ $car->name }}</div>
+    @endforeach
 </div>

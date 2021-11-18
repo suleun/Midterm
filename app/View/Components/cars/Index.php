@@ -5,15 +5,20 @@ namespace App\View\Components\cars;
 use Illuminate\View\Component;
 
 class Index extends Component
+
 {
+
+    public $cars;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($cars)
     {
-        //
+        $this->cars = $cars;    
     }
 
     /**
