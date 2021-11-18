@@ -16,6 +16,14 @@ class CreateCarsTable extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->string('image');
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->year('year');
+            $table->unsignedDecimal('price', $precision=10, $scale= 2);
+            $table->string('type'); // 차종
+            $table->string('style'); // 외형
         });
     }
 
