@@ -14,9 +14,17 @@ class CarFactory extends Factory
      */
     public function definition()
     {
-        $c = new Company();
-        $c->name = '현대';
-        $c->save();
+        $c=null;
+
+        if (Company::all()->count() == 0){
+
+            $c = new Company();
+            $c->name = '현대';
+            $c->save();
+    
+        }else{
+            $c = Company::first();
+        }
 
         return [
 
@@ -31,3 +39,4 @@ class CarFactory extends Factory
         ];
     }
 }
+

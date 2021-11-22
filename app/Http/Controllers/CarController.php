@@ -38,7 +38,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        //
+        return view('components.cars.register-car');
     }
 
     /**
