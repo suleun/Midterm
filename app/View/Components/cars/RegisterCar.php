@@ -6,14 +6,17 @@ use Illuminate\View\Component;
 
 class RegisterCar extends Component
 {
+
+    public $companies;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($companies)
     {
-        //
+        $this->companies = $companies;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -27,8 +28,9 @@ class CarController extends Controller
 
         // $cars = Car::all();
 
-        $cars = Car::latest()->get();
-        return view('cars.index', ['cars'=>$cars]);
+        $cars = Car::latest()->paginate(5);
+
+        return view('components.cars.index', ['cars'=>$cars]);
     }
 
     /**
@@ -38,7 +40,8 @@ class CarController extends Controller
      */
     public function create()
     {
-        return view('components.cars.register-car');
+        $companies = Company::all();
+        return view('components.cars.register-car', ['companies'=>$companies]);
     }
 
     /**
@@ -47,9 +50,34 @@ class CarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
-        //
+
+
+        dd($request->all());
+
+
+        $now = now();
+        $now->year;
+
+        // 자동차 정보 저장에 필요한 데이터가 모두, 적절한 형태로 왔는지 정당성 검사 수행
+        $request->validate([
+            'image'=>'required|image',
+            'name'=>'required|unique:cars',
+            'company'=>'required',
+            'year'=>'required|numeric|min:1800|max:'.($now+1),
+            'price'=>'required|numeric|min:1',
+            'type'=>'required',
+            'style'=>'required'
+        ]);
+
+        // 요청정보에서($request) 필요한 데이터를 꺼내 DB에 저장
+
+
+        // 리다이렉션(서버에 데이터 변경한뒤 요청을 보낼 때 쓰는 것)해서 index를 보여준다.
+
+
     }
 
     /**
