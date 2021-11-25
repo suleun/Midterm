@@ -60,7 +60,7 @@ class CarController extends Controller
         // 자동차 정보 저장에 필요한 데이터가 모두, 적절한 형태로 왔는지 정당성 검사 수행
        $data =  $request->validate([
             'image'=>'required|image',
-            'name'=>'required|unique:cars',
+            'name'=>'required',
             'company_id'=>'required',
             'year'=>'required|numeric|min:1800|max:'.($now->year+1),
             'price'=>'required|numeric|min:1',
