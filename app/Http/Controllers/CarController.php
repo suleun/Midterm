@@ -6,6 +6,7 @@ use App\Models\Car;
 use App\Models\Company;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
@@ -101,9 +102,12 @@ class CarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Car $car)
     {
-        //
+        $companies =Company::all();
+
+        return view('components.cars.car-edit',
+        compact(['car', 'companies']) );
     }
 
     /**
@@ -113,9 +117,47 @@ class CarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Car $car)
     {
-        //
+        $now = now();
+        $now->year;
+
+        // 자동차 정보 저장에 필요한 데이터가 모두, 적절한 형태로 왔는지 정당성 검사 수행
+       $data =  $request->validate([
+            'image'=>'image',
+            'name'=>'required',
+            'company_id'=>'required',
+            'year'=>'required|numeric|min:1800|max:'.($now->year+1),
+            'price'=>'required|numeric|min:1',
+            'type'=>'required',
+            'style'=>'required'
+        ]);
+
+        $path=null;
+
+        if($request->image){ // 기존 이미지를 변경하고자 하는 경우
+            // 기존파일 삭제
+            Storage::delete($car->image);
+
+            // 이미지를 파일 시스템의 특정 위치에 저장
+            $path = $request->image->store('images', 'public');
+
+        }
+
+        if($path != null){
+
+        // 요청정보에서($request) 필요한 데이터를 꺼내 DB에 저장
+        $data = array_merge($data, ['image'=>$path]);
+
+        }
+        // update set name=?, style=?, ...
+        // from cars where id = ?
+        $car->update($data);
+
+
+        // 리다이렉션(서버에 데이터 변경한뒤 요청을 보낼 때 쓰는 것)해서 index를 보여준다.
+        return redirect()->route('cars.car-show');
+
     }
 
     /**
