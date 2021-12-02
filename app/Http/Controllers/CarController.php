@@ -156,7 +156,7 @@ class CarController extends Controller
 
 
         // 리다이렉션(서버에 데이터 변경한뒤 요청을 보낼 때 쓰는 것)해서 index를 보여준다.
-        return redirect()->route('cars.car-show');
+        return redirect()->route('cars.show');
 
     }
 
